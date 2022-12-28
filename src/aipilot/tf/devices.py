@@ -1,6 +1,6 @@
 import tensorflow as tf
 from tensorflow.python.client import device_lib
-from pckgLogger import logger
+from ..pckgLogger import logger
 
 class Devices:
     def __init__(self):
