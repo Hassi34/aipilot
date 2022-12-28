@@ -39,6 +39,7 @@ setuptools.setup(
         "numpy",
         "pandas",
         "matplotlib",
-        "scikit-learn"
+        "scikit-learn",
+        "colorama"
     ]
 )   
