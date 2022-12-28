@@ -143,3 +143,4 @@ requirements.txt
 *.pkl
 cachedir
 *.ipynb
+local_tests.py 

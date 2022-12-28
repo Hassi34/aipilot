@@ -1,6 +1,13 @@
+from pathlib import Path
+import sys
+FILE = Path(__file__).resolve()
+ROOT = FILE.parents[1] 
+if str(ROOT) not in sys.path:
+    sys.path.append(str(ROOT))
+
 import tensorflow as tf
 from tensorflow.python.client import device_lib
-from ..pckgLogger import logger
+from pckgLogger import logger
 
 class Devices:
     def __init__(self):
