@@ -48,20 +48,20 @@ class DataPrep:
         if val_dir is not None:
                 valid_generator = base_datagen.flow_from_directory(
                 directory=val_dir,
-                shuffle=False,
+                shuffle=True,
                 **dataflow_kwargs)
         else:
             try:
                 valid_generator = base_datagen.flow_from_directory(
                     directory=train_dir,
                     subset="validation",
-                    shuffle=False,
+                    shuffle=True,
                     **dataflow_kwargs)
             except TypeError:
                 valid_generator = base_datagen.flow_from_directory(
                     directory=self.data_dir,
                     subset="validation",
-                    shuffle=False,
+                    shuffle=True,
                     **dataflow_kwargs)
 
         return train_generator, valid_generator
