@@ -6,7 +6,8 @@ class DataPrep:
     def __init__(self, data_dir):
         self.data_dir  = data_dir
     def data_generators(self, val_split = 0.2, img_size = (224, 224), batch_size = 16,
-                            data_augmentation = False, train_dir = None, val_dir = None):
+                            data_augmentation = False, train_dir = None, val_dir = None,
+                            train_shuffle = True, val_shuffle = False):
         if val_dir is not None:
             datagen_kwargs = dict( rescale=1./255)
         else:
@@ -36,32 +37,32 @@ class DataPrep:
             train_generator = train_datagen.flow_from_directory(
                 directory=train_dir,
                 subset="training",
-                shuffle=True,
+                shuffle=train_shuffle,
                 **dataflow_kwargs)
         else:
             train_generator = train_datagen.flow_from_directory(
                 directory=self.data_dir,
                 subset="training",
-                shuffle=True,
+                shuffle=train_shuffle,
                 **dataflow_kwargs)
             
         if val_dir is not None:
                 valid_generator = base_datagen.flow_from_directory(
                 directory=val_dir,
-                shuffle=True,
+                shuffle=val_shuffle,
                 **dataflow_kwargs)
         else:
             try:
                 valid_generator = base_datagen.flow_from_directory(
                     directory=train_dir,
                     subset="validation",
-                    shuffle=True,
+                    shuffle=val_shuffle,
                     **dataflow_kwargs)
             except TypeError:
                 valid_generator = base_datagen.flow_from_directory(
                     directory=self.data_dir,
                     subset="validation",
-                    shuffle=True,
+                    shuffle=val_shuffle,
                     **dataflow_kwargs)
 
         return train_generator, valid_generator
