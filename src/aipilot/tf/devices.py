@@ -35,4 +35,3 @@ class Devices:
     def available_devices(self):
         all_devices = device_lib.list_local_devices()
         self.logger.info(all_devices)
-        return all_devices

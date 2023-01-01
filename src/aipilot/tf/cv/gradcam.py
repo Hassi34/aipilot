@@ -42,7 +42,7 @@ class GradCam:
             self.make_gradcam_heatmap()
         return self.heatmap, self.preds.numpy()
 
-    def save_and_display_gradcam(self, alpha=0.4):
+    def get_gradcam(self, alpha=0.4):
         try:
             img = tf.keras.preprocessing.image.load_img(self.in_img_path)
             img = tf.keras.preprocessing.image.img_to_array(img)
@@ -67,4 +67,11 @@ class GradCam:
             
         except AttributeError:
             self.make_gradcam_heatmap()
-            self.save_and_display_gradcam()
+            self.get_gradcam()
+
+    def display(self):
+        try:
+            display(Image(self.out_img_path))
+        except FileNotFoundError:
+            self.get_gradcam()
+            display()
