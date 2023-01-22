@@ -1,7 +1,7 @@
 import tensorflow as tf
 import os
 
-def callbacks (callbacked_model_name ,model_ckpt_path, tensorboard_logs_dir, es_patience=5, lr_patience=3):
+def callbacks (callbacked_model_name ,model_ckpt_path, tensorboard_logs_dir, es_patience=5, lr_patience=4):
     #Tensorboard Callback 
     tensorboard_cb = tf.keras.callbacks.TensorBoard(log_dir = tensorboard_logs_dir)
     #Early stopping callback
