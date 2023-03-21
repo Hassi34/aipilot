@@ -1,12 +1,14 @@
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import numpy as np
+from typing import Union
 
 class DataPrep:
     def __init__(self, data_dir):
         self.data_dir  = data_dir
     def data_generators(self, val_split = 0.2, img_size = (224, 224), batch_size = 16,
-                            data_augmentation = False, train_dir = None, val_dir = None,
+                            data_augmentation = False, augmentation_strategy : Union[str, tuple]='default',
+                            train_dir = None, val_dir = None,
                             train_shuffle = True, val_shuffle = False):
         if val_dir is not None:
             datagen_kwargs = dict( rescale=1./255)
@@ -21,16 +23,23 @@ class DataPrep:
         base_datagen = tf.keras.preprocessing.image.ImageDataGenerator(**datagen_kwargs)
             
         if data_augmentation:
-            train_datagen = tf.keras.preprocessing.image.ImageDataGenerator(
-                shear_range=0.2,
-                rotation_range=40,  # randomly rotate images in the range (degrees, 0 to 180)
-                zoom_range = 0.2, # Randomly zoom image 
-                width_shift_range=0.2,  # randomly shift images horizontally (fraction of total width)
-                height_shift_range=0.2,  # randomly shift images vertically (fraction of total height)
-                horizontal_flip=True,  # randomly flip images
-                vertical_flip=True,
-                **datagen_kwargs
-            )
+            if augmentation_strategy == 'default':
+                train_datagen = tf.keras.preprocessing.image.ImageDataGenerator(
+                    shear_range=0.2,
+                    rotation_range=40,  # randomly rotate images in the range (degrees, 0 to 180)
+                    zoom_range = 0.2, # Randomly zoom image 
+                    width_shift_range=0.2,  # randomly shift images horizontally (fraction of total width)
+                    height_shift_range=0.2,  # randomly shift images vertically (fraction of total height)
+                    horizontal_flip=True,  # randomly flip images
+                    vertical_flip=True,
+                    **datagen_kwargs
+                )
+            elif isinstance(data_augmentation, tuple):
+                train_datagen = tf.keras.preprocessing.image.ImageDataGenerator(
+                    data_augmentation[0]
+                )
+            else:
+                raise Exception("Invalid input for data augmentation, either pass a valid tuple or leave the default")
         else:
             train_datagen = base_datagen
         if train_dir is not None:
