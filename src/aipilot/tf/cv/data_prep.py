@@ -35,8 +35,8 @@ class DataPrep:
                     vertical_flip=True,
                     **datagen_kwargs
                 )
-            elif isinstance(data_augmentation, keras.preprocessing.image.ImageDataGenerator):
-                train_datagen = data_augmentation
+            elif isinstance(augmentation_strategy, keras.preprocessing.image.ImageDataGenerator):
+                train_datagen = augmentation_strategy
             else:
                 raise Exception("Invalid input for data augmentation, either pass a valid keras data generator object or leave the default")
         else:
