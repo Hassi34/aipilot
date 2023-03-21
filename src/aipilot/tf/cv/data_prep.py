@@ -2,12 +2,13 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 import numpy as np
 from typing import Union
+import keras
 
 class DataPrep:
     def __init__(self, data_dir):
         self.data_dir  = data_dir
     def data_generators(self, val_split = 0.2, img_size = (224, 224), batch_size = 16,
-                            data_augmentation = False, augmentation_strategy : Union[str, tuple]='default',
+                            data_augmentation = False, augmentation_strategy : Union[str, keras.preprocessing.image.ImageDataGenerator]='default',
                             train_dir = None, val_dir = None,
                             train_shuffle = True, val_shuffle = False):
         if val_dir is not None:
@@ -34,12 +35,10 @@ class DataPrep:
                     vertical_flip=True,
                     **datagen_kwargs
                 )
-            elif isinstance(data_augmentation, tuple):
-                train_datagen = tf.keras.preprocessing.image.ImageDataGenerator(
-                    data_augmentation[0]
-                )
+            elif isinstance(data_augmentation, keras.preprocessing.image.ImageDataGenerator):
+                train_datagen = data_augmentation
             else:
-                raise Exception("Invalid input for data augmentation, either pass a valid tuple or leave the default")
+                raise Exception("Invalid input for data augmentation, either pass a valid keras data generator object or leave the default")
         else:
             train_datagen = base_datagen
         if train_dir is not None:
