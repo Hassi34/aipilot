@@ -4,16 +4,22 @@ from IPython.display import Image, display
 import numpy as np
 
 class GradCam:
-    def __init__(self, model, last_conv_layer_name, in_img_path, out_img_path = "out.png", img_size = (224,224)):
+    def __init__(self, model, last_conv_layer_name, in_img_path, normalize_img = True,
+                  out_img_path = "out.png", img_size = (224,224)):
         self.model = model
         self.last_conv_layer_name = last_conv_layer_name
         self.out_img_path = out_img_path
         self.in_img_path = in_img_path
         self.img_size = img_size
+        self.normalize_img = normalize_img
 
     def _get_img_array(self):
         img = tf.keras.preprocessing.image.load_img(self.in_img_path, target_size=self.img_size)
-        self.array = tf.keras.preprocessing.image.img_to_array(img)
+        if self.normalize_img:
+            self.array = tf.keras.preprocessing.image.img_to_array(img)/255
+        else:
+            self.array = tf.keras.preprocessing.image.img_to_array(img)
+
         self.array = np.expand_dims(self.array, axis=0)
         return self.array
 
